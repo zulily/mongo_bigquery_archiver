@@ -1,0 +1,34 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mongo-bigquery-archiver
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mongo-bigquery-archiver
+    spec:
+      containers:
+      - name: mongo-bigquery-archiver
+        image: <repository>/mongo-bigquery-archiver:{{_VERSION_}}
+        command: ["python"]
+        args: ["bigquery_archiver.py"]
+        resources:
+          limits:
+            cpu: 1
+        volumeMounts:
+            - name: analytics-file
+              mountPath: /creds
+              readOnly: true
+            - name: configmap-file
+              mountPath: /config-local
+              readOnly: true
+      volumes:
+        - name: analytics-file
+          secret:
+            secretName: analytics-key
+        - name: configmap-file
+          configMap:
+            name: mongo-bigquery-archiver-configmap
+

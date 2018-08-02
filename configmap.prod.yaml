@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-bigquery-archiver-configmap
+data:
+  config.json: |-
+    {
+        "MONGO_CLIENT": "mongodb://localhost:27017/?replicaset=rs0",
+        "SERVICE_ACCOUNT_FILE": "/creds/google-service-account.json",
+        "BIGQUERY_PROJECT": "bigquery-project-000",
+        "BIGQUERY_DATASET": "bigquery-dataset"
+    }
